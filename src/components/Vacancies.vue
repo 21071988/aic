@@ -2,30 +2,136 @@
   <div id='vacancies'>
     <div class="h__block">
       <h2>Вакансии в гросс маркете</h2>
-      <div class="slider__btns">
-
-      </div>
+       <div class='top__slider__btns'>
+          
+          <div class="slider__btn">
+            <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M0.5 5.13399C-0.166667 5.51889 -0.166667 6.48114 0.5 6.86604L8 11.1962C8.66667 11.5811 9.5 11.0999 9.5 10.3301V1.66989C9.5 0.900087 8.66667 0.418962 8 0.803863L0.5 5.13399Z" fill="black"/>
+            </svg>
+          </div>
+          
+          <div class="slider__btn" @click="moveVacancy">
+            <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.5 5.13399C10.1667 5.51889 10.1667 6.48114 9.5 6.86604L2 11.1962C1.33333 11.5811 0.5 11.0999 0.5 10.3301V1.66989C0.5 0.900087 1.33333 0.418962 2 0.803863L9.5 5.13399Z" fill="black"/>
+            </svg>
+          </div>
+          
+        </div>
     </div>
     <div class="vacancies__slider">
-      <div class="vacancy">
-        <img class='layer1' src="@/assets/images/worker.png" alt="worker">
-        
-        <div class="layer2">
-          <p class="description">
-            товаровед ведет учет товара и еще какой-нибудь текст подлиннее
-          </p>
-        </div>
+      <agile ref="vacancies" :options="optionsVacancies">
+                <div class="slide">
+                    <div class="vacancy">
+                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
+                      
+                      <div class="layer2">
+                        <p class="description">
+                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
+                        </p>
+                      </div>
 
-        <span class='layer3'>товаровед</span>
+                      <span class='layer3'>товаровед</span>
 
-      </div>
+                    </div>
+                </div>
+                    
+                <div class="slide">
+                    <div class="vacancy">
+                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
+                      
+                      <div class="layer2">
+                        <p class="description">
+                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
+                        </p>
+                      </div>
+
+                      <span class='layer3'>товаровед</span>
+
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="vacancy">
+                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
+                      
+                      <div class="layer2">
+                        <p class="description">
+                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
+                        </p>
+                      </div>
+
+                      <span class='layer3'>товаровед</span>
+
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="vacancy">
+                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
+                      
+                      <div class="layer2">
+                        <p class="description">
+                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
+                        </p>
+                      </div>
+
+                      <span class='layer3'>товаровед</span>
+
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="vacancy">
+                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
+                      
+                      <div class="layer2">
+                        <p class="description">
+                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
+                        </p>
+                      </div>
+
+                      <span class='layer3'>товаровед</span>
+
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="vacancy">
+                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
+                      
+                      <div class="layer2">
+                        <p class="description">
+                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
+                        </p>
+                      </div>
+
+                      <span class='layer3'>товаровед</span>
+
+                    </div>
+                </div>    
+            </agile>
+
+      
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+      data(){
+      return{
+        optionsVacancies:{
+          navButtons: false,
+          dots:false,
+          centerMode:true,
+          slidesToShow:3.5
+        }
+      }
+    },
+  methods:{
+    moveVacancy(){
+      this.$refs.vacancies.goToNext();
+    }
+  }
 }
 </script>
 
@@ -41,8 +147,9 @@ export default {
 .vacancy{
   height:33.47vw;
   position: relative;
-  width: 24.3vw;
+  // width: 24.3vw;
   background: @grey;
+  margin-right:30px;
 }
 .layer1, .layer2{
   position: absolute;
