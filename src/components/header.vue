@@ -1,12 +1,17 @@
 <template>
   <div id='header'>
-    <div class="logo">
-      <img src="@/assets/images/logo.svg" alt="">
-      <span>гросс маркет</span>
-    </div>
+    <router-link to='/'>
+      <div class="logo">
+        <img src="@/assets/images/logo.svg" alt="">
+        <span>гросс маркет</span>
+      </div>
+    </router-link>
     <div class="phone__and__button">
       <a href="tel:+79264331416">+7(926)433-14-16</a>
-      <button>Заполнить анкету</button>
+      <router-link to='/questionnaire'>
+        <button>Заполнить анкету</button>
+      </router-link>
+      
     </div>
   </div>
 </template>
@@ -31,6 +36,7 @@ export default {
     .allcenter;
     span{
       font-size: 32px;
+      .sc;
     }
     img{
       margin-right:20px;
@@ -42,6 +48,7 @@ export default {
       color:@bl;
       text-decoration: none;
       font-size: 18px;
+      .sc;
     }
     button{
       width: 187px;
@@ -50,6 +57,7 @@ export default {
       border-radius:8px;
       border:none;
       font-size: 18px;
+      .cp;
     }
   }
 </style>

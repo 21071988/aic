@@ -20,15 +20,31 @@
       @Гросс маркет 2020
     </div>
     <div class="half">
-      <p>Политика обработки персональных данных</p>
+      <p @click='showSome' >Политика обработки персональных данных</p>
     </div>
-  </div>
+  </div> 
+  <Worksheet/>
 </div>
 </template>
 
 <script>
+import Worksheet from '@/components/Worksheet.vue';
 export default {
-
+  components: {
+      Worksheet
+    },
+    data(){
+      return{
+        
+     }
+    },
+    methods:{
+      showSome(){
+        let dataModal = document.getElementById('modal__wrapper');
+        dataModal.style.display='block';
+        dataModal.classList.add('showModal');
+      }
+    }
 }
 </script>
 
@@ -38,6 +54,9 @@ export default {
   padding:75px @ml 0;
   background: @grey;
   border-radius: 0;
+}
+.modal__wrapper{
+  display:none;
 }
   #footer{
     padding:0 @m;
@@ -74,5 +93,10 @@ export default {
     .fs;
     .flex;
     height:75px;
+    p{
+      &:hover{
+        .cp;
+      }
+    }
   }
 </style>

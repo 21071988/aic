@@ -1,20 +1,46 @@
 .flex{
   display: flex;
 }
+.column{
+  .flex;
+  flex-direction: column;
+}
+h1,h2,h3{
+  text-align: left;
+}
 .w100{
   width: 100%;
 }
 .allcenter{
   .flex;
   align-items: center;
+  justify-content: center;
 }
-.betweetn{
+.between{
   .flex;
   justify-content: space-between;
 }
 .f1{
   font-size: 32px;
 }
+.f2{
+  font-size: 18px;
+}
 .fs{
   font-size: 14px;
+}
+.t5{
+  transition:.3s;
+}
+.sc{
+  .t5;
+  &:hover{
+    color:#dca196;
+  }
+}
+a{
+  .sc;
+}
+.half{
+  flex:1;
 }
