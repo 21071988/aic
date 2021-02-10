@@ -20,10 +20,11 @@
 
         </div>
     </div>
-    <div class="half allcenter">
+    
       
       <div class="round__border">
-        <div class="slider__name">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 318" class='round__svg'><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1"><path class="cls-1" d="M19,158A223.8,223.8,0,0,0,86,318H0V0H84A223.78,223.78,0,0,0,19,158Z"/><path class="cls-1" d="M488,0V318H401A224.5,224.5,0,0,0,403,0Z"/></g></g></svg> 
+       <div class="slider__name">
              <agile ref="carousel2" :options="optionsName">
                 <div class="slide">
                     <h3>Ivan</h3>
@@ -58,17 +59,17 @@
          
           
           
-          <svg width='0' height='0'>
+          <!-- <svg width='0' height='0'>
             <defs>
               <clipPath id='myClip'>
                 <path class="cls-1" d="M449.5,158.5a223.8,223.8,0,0,1-67,160h-315a224.5,224.5,0,0,1-2-318h319A223.78,223.78,0,0,1,449.5,158.5Z"/>
               </clipPath>
             </defs>
-          </svg> 
+          </svg>  -->
           
       </div>
     </div>
-  </div>
+  
  
 
 </div>
@@ -109,11 +110,21 @@ export default {
     }
     
   }
+  .round__svg{
+    position: absolute;
+    top:0;
+    left:0;
+    height:400px;
+    z-index:2;
+    overflow: hidden;
+    fill:@grey;
+  }
   .slider__wrapper{
     background: @grey;
-    height: 400px;
-    padding:0 @ml;
-    .flex;
+    height: 43vh;
+    padding-left:@ml;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
     overflow: hidden;
     margin-bottom:90px;
   }
@@ -167,12 +178,12 @@ export default {
   .round__border{
     position: relative;
     height: 100%;
-    clip-path:url(#myClip);
+    width: fit-content;
     
   }
   .img__slider{
     .agile{
-          width: 20vw;
+          width: 65vh;
         }
   }
   .half{
