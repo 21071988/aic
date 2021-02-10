@@ -3,6 +3,7 @@
     <h2>Мы в инстаграме</h2>
     <div class="inst__block">
       <div class="half inst__images">
+        <img src="@/assets/images/inst.jpg" alt="">
           <img src="@/assets/images/inst.jpg" alt="">
           <img src="@/assets/images/inst.jpg" alt="">
           <img src="@/assets/images/inst.jpg" alt="">
@@ -37,6 +38,9 @@ export default {
 
 <style lang='less'>
 @import '~@/assets/css/styles.less';
+  h2{
+    margin-left:@ml;
+  }
   .inst__block{
     margin:0 @ml;
     .flex;
@@ -46,18 +50,25 @@ export default {
     
   }
   .inst__block{
-img{
+  img{
       .w100;
     }
   }
   .inst__images{
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(4,1fr);
     grid-gap:@m;
-    margin-left:@m;
+    img{
+      &:first-child{
+        grid-column-start: 1;
+        grid-column-end: 3;
+        grid-row-start: 1;
+        grid-row-end: 4;
+      }
+    }
   }
   .inst__more{
-    margin:@m @ml;
+    margin:0 @ml;
     display: grid;
     grid-template-columns: repeat(4,1fr);
     grid-gap:@m;
@@ -70,5 +81,59 @@ img{
     border-radius:8px;
     border:none;
     margin:calc(@m *2) auto;
+  }
+
+  @media screen and (max-width:768px) {
+    .inst__images{
+      margin-bottom:@m;
+      grid-template-columns:repeat(12,1fr);
+      img{
+      &:first-child{
+        grid-column-start: 1;
+        grid-column-end: 7;
+        grid-row-start: 1;
+        grid-row-end: 2;
+      }
+       &:nth-child(2){
+        grid-column-start: 7;
+        grid-column-end: 13;
+        grid-row-start: 1;
+        grid-row-end: 2;
+      }
+       &:nth-child(3){
+        grid-column-start: 1;
+        grid-column-end: 5;
+      }
+      &:nth-child(4){
+        grid-column-start: 5;
+        grid-column-end: 9;
+      }
+      &:nth-child(5){
+        grid-column-start: 9;
+        grid-column-end: 13;
+      }
+    }
+    }
+    .inst__more{
+      grid-template-columns: repeat(3,1fr);
+    }
+  }
+
+@media screen and (max-width:768px) {
+    body{
+      background: red;
+    }
+    .inst__more{
+      grid-template-columns: repeat(1,1fr);
+    }
+  }
+  .inst__images{
+    display:block;
+  }
+  .inst__block{
+    margin:0 10px;
+  }
+  h2{
+    margin-left:10px;
   }
 </style>
