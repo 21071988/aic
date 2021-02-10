@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="half between">
-      <p>Поделиться</p>
+      <p v-if='!showPhone'>Поделиться</p>
       <div class="social__links">
         <img src="@/assets/images/facebook.svg" alt="facebook">
         <img src="@/assets/images/vk.svg" alt="vk">
@@ -33,10 +33,15 @@ export default {
   components: {
       Worksheet
     },
-    data(){
+  data(){
       return{
-        
-     }
+        bodyWidth:'',
+        showPhone:false
+    }
+  },
+  mounted(){
+      this.bodyWidth = document.body.clientWidth;
+      if(this.bodyWidth<375){this.showPhone = true};
     },
     methods:{
       showSome(){
@@ -99,4 +104,28 @@ export default {
       }
     }
   }
+  @media screen and (max-width:768px){
+    .footer__wrapper{
+      padding:40px;
+    }
+  }
+  @media screen and (max-width:768px){
+    .footer__wrapper{
+      padding:20px 0px;
+    }
+    #footer{
+      flex-direction: column;
+      padding:40px 20px;
+    }
+    .half{
+      .w100;
+    }
+    .footer__bottom{
+      .column;
+      padding:40px 20px;
+      p{
+        text-align: left;
+      }
+    }
+   }
 </style>

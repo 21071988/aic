@@ -38,6 +38,7 @@ export default {
 
 <style lang='less'>
 @import '~@/assets/css/styles.less';
+
   h2{
     margin-left:@ml;
   }
@@ -84,6 +85,9 @@ export default {
   }
 
   @media screen and (max-width:768px) {
+    .inst__block{
+      margin:0 @m;
+    }
     .inst__images{
       margin-bottom:@m;
       grid-template-columns:repeat(12,1fr);
@@ -119,14 +123,15 @@ export default {
     }
   }
 
-@media screen and (max-width:768px) {
-    body{
-      background: red;
-    }
+@media screen and (max-width:375px) {
+    
     .inst__more{
       grid-template-columns: repeat(1,1fr);
     }
-  }
+    .inst__images{
+      grid-template-columns: repeat(1,1fr);
+    }
+  
   .inst__images{
     display:block;
   }
@@ -136,4 +141,5 @@ export default {
   h2{
     margin-left:10px;
   }
+}
 </style>
