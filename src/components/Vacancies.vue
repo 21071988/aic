@@ -123,7 +123,28 @@ export default {
           navButtons: false,
           dots:false,
           centerMode:true,
-          slidesToShow:3.5
+          slidesToShow:3.5,
+          responsive:[
+            {
+              breakpoint:769,
+              settings:{
+                slidesToShow:3.5
+              }
+            },
+            {
+              breakpoint:376,
+              settings:{
+                slidesToShow:2.5
+              }
+            },
+            {
+              breakpoint:0,
+              settings:{
+                slidesToShow:1.25
+              }
+            }
+
+          ]
         }
       }
     },
@@ -140,6 +161,9 @@ export default {
 #vacancies{
   margin-left:@ml;
   margin-bottom: @mb;
+  h2{
+  margin-left:0 !important;
+}
 }
 .h__block{
   .between;
@@ -188,5 +212,22 @@ export default {
     width: 40%;
     background:#ffffff;
     padding:10px 5px;
+}
+
+@media screen and (max-width:768px){
+  #vacancies{
+    margin-left:@m;
+  }
+  .vacancy{
+    height: 49.47vw;
+  }
+}
+@media screen and (max-width:475px){
+  #vacancies{
+    margin-left:15px;
+  }
+  .vacancy{
+    height: 104vw;
+  }
 }
 </style>

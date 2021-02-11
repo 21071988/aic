@@ -2,8 +2,8 @@
   <div>
 
   <div class="slider__wrapper">
-    <div class="half">
-        <h1>У тебя к этому <br> талант</h1>
+    <div>
+        <h1>У тебя к этому талант</h1>
         <div class='top__slider__btns'>
           
           <div class="slider__btn">
@@ -20,11 +20,10 @@
 
         </div>
     </div>
-    
-      
-      <div class="round__border">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 318" class='round__svg'><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1"><path class="cls-1" d="M19,158A223.8,223.8,0,0,0,86,318H0V0H84A223.78,223.78,0,0,0,19,158Z"/><path class="cls-1" d="M488,0V318H401A224.5,224.5,0,0,0,403,0Z"/></g></g></svg> 
-       <div class="slider__name">
+    <div class='round__block'>
+      <div class="circle">
+         <!-- slider name -->
+         <div class="slider__name">
              <agile ref="carousel2" :options="optionsName">
                 <div class="slide">
                     <h3>Ivan</h3>
@@ -35,6 +34,7 @@
                 </div>    
             </agile>
         </div>
+       <!-- slider job -->
         <div class="slider__position">
           <agile ref="carousel3" :options="optionsName">
                 <div class="slide">
@@ -46,40 +46,32 @@
                 </div>    
             </agile>
         </div>
-        <div class='img__slider'>
-          <agile ref="carousel">
-            <div class="slide">
-              <img src="@/assets/images/image10.png" alt="">
-            </div>
-            <div class="slide">
-              <img src="@/assets/images/image10.png" alt="">
-            </div>
-        </agile>
+       <!-- slider image -->
+        <div class="slider__asbolute">
+            <agile ref="carousel" :options='imgSlider'>
+              <div class="slide">
+                <img src="@/assets/images/image10.png" alt="">
+              </div>
+              <div class="slide">
+                <img src="@/assets/images/image10.png" alt="">
+              </div>
+            </agile> 
         </div>
-         
-          
-          
-          <!-- <svg width='0' height='0'>
-            <defs>
-              <clipPath id='myClip'>
-                <path class="cls-1" d="M449.5,158.5a223.8,223.8,0,0,1-67,160h-315a224.5,224.5,0,0,1-2-318h319A223.78,223.78,0,0,1,449.5,158.5Z"/>
-              </clipPath>
-            </defs>
-          </svg>  -->
-          
       </div>
     </div>
-  
- 
+      
+     
+    </div> 
+
 
 </div>
 </template>
 
 <script>
-import { VueAgile } from 'vue-agile'
+// import { VueAgile } from 'vue-agile'
 export default {
   components: {
-        agile: VueAgile 
+        // agile: VueAgile 
     },
     data(){
       return{
@@ -88,6 +80,14 @@ export default {
           dots:false,
           centerMode:true,
           slidesToShow: 1,
+          arrows:false
+        },
+        imgSlider:{
+          navButtons: false,
+          dots:false,
+          centerMode:true,
+          slidesToShow: 1,
+          arrows:false
         }
       }
     },
@@ -110,21 +110,43 @@ export default {
     }
     
   }
+  .round__block{
+    .allcenter;
+    overflow:hidden;
+  }
+  .circle{
+    height:600px;
+    width:600px;
+    border-radius:50% !important;
+    position: relative;
+    overflow: hidden;
+  }
+  .slider__asbolute{
+    position: absolute;
+    width: 100%;
+    height:100%;
+    top:0;
+    left:0;
+    background: cadetblue;
+    .agile{
+      margin-top:100px;
+    }
+  }
   .round__svg{
     position: absolute;
     top:0;
     left:0;
-    height:400px;
+    width: 100%;
     z-index:2;
     overflow: hidden;
     fill:@grey;
   }
   .slider__wrapper{
     background: @grey;
-    height: 43vh;
-    padding-left:@ml;
+    height: 400px;
+    padding:0 @ml;
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: 1fr 2fr;
     overflow: hidden;
     margin-bottom:90px;
   }
@@ -136,15 +158,15 @@ export default {
     border-radius:1000px;
   }
   .slider__name{
-    left:10%;
-    top:50%;
+    left:15%;
+    top:63%;
     .agile{
       width:80px;
     }
   }
   .slider__position{
-    right:10%;
-    top:10%;
+    right: 17%;
+    top: 24%;
     width:120px;
   }
   .slider__btn{
@@ -177,20 +199,53 @@ export default {
   }
   .round__border{
     position: relative;
-    height: 100%;
-    width: fit-content;
-    
+    width: 100%;
+    overflow: hidden;  
   }
   .img__slider{
+    width: 100%;
     .agile{
-          width: 65vh;
+      img{
+          width: 100%;
         }
-  }
-  .half{
-    width: 50%;
+      }
   }
   h1{
-    font-size: 72px;
-    line-height: 66px;
+    .thefontL;
+    font-size: 66px;
+    line-height: 55px;
+    margin-bottom:@m;
+    width: 250px;
+  }
+  @media screen and (max-width:768px){
+    .slider__wrapper{
+      padding:0 0 0 45px;
+    }
+  }
+  @media screen and (max-width:375px){
+    .slider__wrapper{
+      padding:0;
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+    .top__slider__btns{
+      display: none;
+    }
+    .round__block{
+      height: 426px;
+    }
+    .round__block{
+      align-items: flex-start;
+    }
+    .slider__asbolute{
+      .agile{
+        margin-top:0;
+      }
+    }
+    h1{
+      width: auto;
+      margin:50px @m;
+      font-size: 48px;
+    }
   }
 </style>

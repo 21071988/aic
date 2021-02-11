@@ -34,8 +34,8 @@ export default {
     }
   },
   mounted(){
-      this.bodyWidth = document.body.clientWidth;
-      if(this.bodyWidth<375){this.showPhone = true};
+      this.bodyWidth = document.body.clientWidth
+      if(this.bodyWidth<375){this.showPhone = true}
   }
 }
 </script>
