@@ -124,7 +124,7 @@
             </div>
             <p>я подтверждаю согласие на обработку персональных <br> данных и принимаю условия рассмотрения обращений*</p>
           </div>
-          <button class='submit w100' @click='checkErrors'>Отправить</button>
+          <button class='submit w100' @click='checkErrors'><rounter-link to="/Success">Отправить</rounter-link> </button>
         </form>
       </div>
 
@@ -132,7 +132,6 @@
         <h2>Наша суперцель</h2>
         <p>&mdash;&nbsp;стать любимым магазином для каждой российской семьи. Сотни тысяч наших сотрудников ежедневно работают над её достижением. Мы&nbsp;уверены, что в&nbsp;ближайшие годы достигнем этого и&nbsp;будет здорово, если вместе с&nbsp;тобой.</p>
         <div class='phone__link'><a href="tel:+79264331416">+7(926)433-14-16</a></div>
-
       </div>
     </div>
   </div>
@@ -476,6 +475,9 @@ input{
   @media screen and(max-width:375px){
     .flex__block{
       .column;
+    }
+    .m40{
+      margin-right: 0;
     }
   }
 </style>

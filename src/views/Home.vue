@@ -3,6 +3,7 @@
     <Slider/>
     <Vacancies/>
     <Instagram/>
+    <Map/>
     
     
 
@@ -14,6 +15,8 @@
 import Vacancies from '@/components/Vacancies.vue';
 import Instagram from '@/components/Instagram.vue';
 import Slider from '@/components/Slider.vue';
+import Map from '@/components/Map.vue';
+
 
 
 export default {
@@ -21,7 +24,8 @@ export default {
   components: {
     Vacancies,
     Instagram,
-    Slider
+    Slider,
+    Map
   }
 }
 </script>

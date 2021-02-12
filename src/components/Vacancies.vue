@@ -1,5 +1,6 @@
 <template>
   <div id='vacancies'>
+
     <div class="h__block">
       <h2>Вакансии в гросс маркете</h2>
        <div class='top__slider__btns'>
@@ -18,96 +19,24 @@
           
         </div>
     </div>
+    
     <div class="vacancies__slider">
-      <agile ref="vacancies" :options="optionsVacancies">
-                <div class="slide">
+      <agile ref="vacancies" :options="optionsVacancies">                    
+                <div class="slide" v-for="vac in vacs" :key="vac.id">
                     <div class="vacancy">
-                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
-                      
+                        <img class='layer1' v-bind:src="'http://aic.slim.technology/'+vac.PICTURE" alt="worker">          
                       <div class="layer2">
                         <p class="description">
-                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
+                          {{vac.DESC}}
                         </p>
                       </div>
 
-                      <span class='layer3'>товаровед</span>
-
-                    </div>
-                </div>
-                    
-                <div class="slide">
-                    <div class="vacancy">
-                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
-                      
-                      <div class="layer2">
-                        <p class="description">
-                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
-                        </p>
-                      </div>
-
-                      <span class='layer3'>товаровед</span>
+                      <span class='layer3'>{{vac.NAME}}</span>
 
                     </div>
                 </div>
 
-                <div class="slide">
-                    <div class="vacancy">
-                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
-                      
-                      <div class="layer2">
-                        <p class="description">
-                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
-                        </p>
-                      </div>
-
-                      <span class='layer3'>товаровед</span>
-
-                    </div>
-                </div>
-
-                <div class="slide">
-                    <div class="vacancy">
-                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
-                      
-                      <div class="layer2">
-                        <p class="description">
-                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
-                        </p>
-                      </div>
-
-                      <span class='layer3'>товаровед</span>
-
-                    </div>
-                </div>
-
-                <div class="slide">
-                    <div class="vacancy">
-                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
-                      
-                      <div class="layer2">
-                        <p class="description">
-                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
-                        </p>
-                      </div>
-
-                      <span class='layer3'>товаровед</span>
-
-                    </div>
-                </div>
-                <div class="slide">
-                    <div class="vacancy">
-                      <img class='layer1' src="@/assets/images/worker.png" alt="worker">
-                      
-                      <div class="layer2">
-                        <p class="description">
-                          товаровед ведет учет товара и еще какой-нибудь текст подлиннее
-                        </p>
-                      </div>
-
-                      <span class='layer3'>товаровед</span>
-
-                    </div>
-                </div>    
+                   
             </agile>
 
       
@@ -116,9 +45,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
       data(){
       return{
+        vacs:null,
         optionsVacancies:{
           navButtons: false,
           dots:false,
@@ -152,6 +83,11 @@ export default {
     moveVacancy(){
       this.$refs.vacancies.goToNext();
     }
+  },
+  mounted() {
+    axios
+      .get('http://aic.slim.technology/api/get/vacansys/')
+      .then(response => (this.vacs = response.data))
   }
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div>
-
   <div class="slider__wrapper">
     <div>
         <h1>У тебя к этому талант</h1>
@@ -25,35 +24,25 @@
          <!-- slider name -->
          <div class="slider__name">
              <agile ref="carousel2" :options="optionsName">
-                <div class="slide">
-                    <h3>Ivan</h3>
-                </div>
-                    
-                <div class="slide">
-                    <h3>Stepan</h3>
+                <div class="slide" v-for="item in items" :key="item.id">
+                    <h3>{{item.NAME}}</h3>
                 </div>    
             </agile>
         </div>
        <!-- slider job -->
         <div class="slider__position">
           <agile ref="carousel3" :options="optionsName">
-                <div class="slide">
-                    <h3>Pekar'</h3>
+                <div class="slide" v-for="item in items" :key="item.id">
+                    <h3>{{item.VACANSY_NAME}}<br/></h3>
                 </div>
-                    
-                <div class="slide">
-                    <h3>Shmekar'</h3>
-                </div>    
+                     
             </agile>
         </div>
        <!-- slider image -->
         <div class="slider__asbolute">
             <agile ref="carousel" :options='imgSlider'>
-              <div class="slide">
-                <img src="@/assets/images/image10.png" alt="">
-              </div>
-              <div class="slide">
-                <img src="@/assets/images/image10.png" alt="">
+              <div class="slide" v-for="item in items" :key="item.id" >
+                <img v-bind:src="'http://aic.slim.technology/'+item.PICTURE" alt="">
               </div>
             </agile> 
         </div>
@@ -68,13 +57,14 @@
 </template>
 
 <script>
-// import { VueAgile } from 'vue-agile'
+import axios from 'axios'
 export default {
   components: {
-        // agile: VueAgile 
+        
     },
     data(){
       return{
+        items: null,
         optionsName:{
           navButtons: false,
           dots:false,
@@ -97,7 +87,12 @@ export default {
         setTimeout(()=>this.$refs.carousel2.goToNext(),100)
         setTimeout(()=>this.$refs.carousel3.goToNext(),270)
       }
-    }
+    },
+    created() {
+    axios
+      .get('http://aic.slim.technology/api/get/banners/')
+      .then(response => (this.items = response.data));
+  }
 }
 </script>
 
@@ -111,7 +106,6 @@ export default {
     
   }
   .round__block{
-    .allcenter;
     overflow:hidden;
   }
   .circle{
@@ -120,6 +114,7 @@ export default {
     border-radius:50% !important;
     position: relative;
     overflow: hidden;
+    transform:translateY(-100px);
   }
   .slider__asbolute{
     position: absolute;
@@ -146,7 +141,7 @@ export default {
     height: 400px;
     padding:0 @ml;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr minmax(600px, 2fr);
     overflow: hidden;
     margin-bottom:90px;
   }
@@ -220,6 +215,11 @@ export default {
   @media screen and (max-width:768px){
     .slider__wrapper{
       padding:0 0 0 45px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .slider__position{
+      right:auto;
+      left:27%;
     }
   }
   @media screen and (max-width:375px){
@@ -232,7 +232,7 @@ export default {
       display: none;
     }
     .round__block{
-      height: 426px;
+      height: 400px;
     }
     .round__block{
       align-items: flex-start;
@@ -245,7 +245,20 @@ export default {
     h1{
       width: auto;
       margin:50px @m;
-      font-size: 48px;
+      font-size: 40px;
+      line-height: 40px;
     }
+    .circle{
+      transform:translateX(-150px);
+    }
+    .slider__position {
+    right: 25%;
+    left: auto;
+    top: 10%;
+    }
+    .slider__name {
+    left: 30%;
+    top: 50%;
+  }
   }
 </style>
