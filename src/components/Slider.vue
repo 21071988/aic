@@ -1,6 +1,7 @@
 <template>
   <div>
-  <div class="slider__wrapper">
+    <div v-if='loading'></div>
+  <div v-else class="slider__wrapper">
     <div>
         <h1>У тебя к этому талант</h1>
         <div class='top__slider__btns'>
@@ -65,6 +66,7 @@ export default {
     data(){
       return{
         items: null,
+        loading:true,
         optionsName:{
           navButtons: false,
           dots:false,
@@ -91,7 +93,10 @@ export default {
     created() {
     axios
       .get('http://aic.slim.technology/api/get/banners/')
-      .then(response => (this.items = response.data));
+      .then(response => {(
+        this.items = response.data);
+        this.loading = false;
+      });
   }
 }
 </script>
@@ -122,7 +127,7 @@ export default {
     height:100%;
     top:0;
     left:0;
-    background: cadetblue;
+  
     .agile{
       margin-top:100px;
     }
@@ -155,9 +160,7 @@ export default {
   .slider__name{
     left:15%;
     top:63%;
-    .agile{
-      width:80px;
-    }
+    width: 120px;
   }
   .slider__position{
     right: 17%;

@@ -1,23 +1,33 @@
 <template>
-<div class="map__wrapper">
-  <div v-for='marker in markers' :key="marker.NAME">[{{marker.GEO}}]</div>
-  <div class="btns">
-    <button @click='showUr'>юрлица</button>
-    <button @click='showFiz'>физлица</button>
-    <button @click='showAll' class='show__all'>показать все</button>
-  </div>
-  <yandex-map :coords="coords" :zoom='zoom'>
-    
-    <div v-for="marker in markers" :key="marker.id">
-      <ymap-marker 
-        v-if='urlizo'
-        :marker-id="marker.NAME" 
-        :coords="[marker.GEO]"
-        :icon="markerIcon"
-      />
+<div>
+  <div v-if='loading'></div>
+  <div v-else class="map__wrapper">
+    <div class="btns">
+      <button @click='showUr'>юрлица</button>
+      <button @click='showFiz'>физлица</button>
+      <button @click='showAll' class='show__all'>показать все</button>
     </div>
-    
-  </yandex-map>
+    <yandex-map :coords="coords" :zoom='zoom'>
+      
+      <div v-for="marker in markers" :key="marker.id">
+        <div v-if='marker.TYPE==whichone'>
+        <ymap-marker 
+          :marker-id="marker.NAME" 
+          :coords='[marker.lat,marker.lng]'
+          :icon="markerIcon"
+        />
+      </div>
+      <div v-else-if='showA'>
+        <ymap-marker 
+          :marker-id="marker.NAME" 
+          :coords='[marker.lat,marker.lng]'
+          :icon="markerIcon"
+        />
+      </div>
+      </div>
+      
+    </yandex-map>
+  </div>  
 </div>
 </template>
 
@@ -29,8 +39,9 @@ export default {
 data(){
   return{
         markers:null,
-        fiz:true,
-        urlizo:true,
+        loading:true,
+        whichone:'ur',
+        showA:false,
         settings: {
         apiKey: '8a5b1025-d7dd-4b21-916e-9a927df033cc',
         lang: 'ru_RU',
@@ -39,9 +50,10 @@ data(){
         
       },
       coords: [
-      54.82896654088406,
-      39.831893822753904,
+      55.754579203359,37.582321777344,
       ],
+      lat:55.754579203359,
+      lng:37.582321777344,
       zoom:12,
       coords2: [
       54.84,
@@ -49,7 +61,7 @@ data(){
       ],
       markerIcon: {
         layout: 'default#imageWithContent',
-        imageHref: 'https://image.flaticon.com/icons/png/512/33/33447.png',
+        imageHref: 'http://aic.slim.technology/assets/images/marker.svg',
         imageSize: [43, 43],
         imageOffset: [0, 0],
         content: '',
@@ -59,32 +71,42 @@ data(){
   }
 },
   methods: {
+    
     showFiz(){
-      this.fiz=true;
-      this.urlizo = false;
+      this.whichone = 'fiz'
+      this.showA = false
+
     },
     showUr(){
-      this.fiz=false;
-      this.urlizo=true;
+      this.whichone = 'ur'
+      this.showA = false
 
       
     },
     showAll(){
-      this.fiz=true;
-      this.urlizo=true;
+      this.showA = true
 
     }
+  },
+  computed:{
   },
   mounted(){
     axios
       .get('http://aic.slim.technology/api/get/maps/')
-      .then(response => (this.markers = response.data));
+      .then(response => {
+        (this.markers = response.data);
+        this.loading=false
+        });
   }
 }
 </script>
 
 <style lang='less'>
 @import '~@/assets/css/styles.less';
+.ymap-container{
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
 button{
   font-size: 18px;
   padding:10px 15px;

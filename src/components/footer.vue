@@ -10,8 +10,8 @@
     <div class="half between">
       <p v-if='!showPhone'>Поделиться</p>
       <div class="social__links">
-        <a href="http://www.facebook.com/sharer/sharer.php?s=100&p%5Btitle%5D=[TITLE]&p%5Bsummary%5D=[TEXT]&p%5Burl%5D=[LINK]&p%5Bimages%5D%5B0%5D=[IMAGE]"><img src="@/assets/images/facebook.svg" alt="facebook"></a>
-        <a href="https://vk.com/share.php?url=[LINK]"><img src="@/assets/images/vk.svg" alt="vk"></a>
+        <a target='blank' href="http://www.facebook.com/sharer/sharer.php?s=100&p%5Btitle%5D=[TITLE]&p%5Bsummary%5D=[TEXT]&p%5Burl%5D=[LINK]&p%5Bimages%5D%5B0%5D=[IMAGE]"><img src="@/assets/images/facebook.svg" alt="facebook"></a>
+        <a target='blank' href="https://vk.com/share.php?url=[LINK]"><img src="@/assets/images/vk.svg" alt="vk"></a>
         
       </div>
     </div>

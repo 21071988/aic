@@ -72,7 +72,7 @@ export default {
       .sc;
     }
     button{
-      width: 187px;
+      
       height: 47px;
       background:@ye;
       border-radius:8px;

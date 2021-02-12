@@ -4,7 +4,7 @@
     <div class="quests__wrapper">
       
       <div class="quests__form mr">
-        <form>
+        <form @submit='checkAndSubmit'>
           <label for="vacancy">
             
             <span>Вакансия*<img class='checked' src="@/assets/images/checked.svg" alt=""></span>
@@ -14,7 +14,7 @@
                   <path d="M6.86601 9.5C6.48111 10.1667 5.51886 10.1667 5.13396 9.5L0.803833 2C0.418933 1.33333 0.900059 0.5 1.66986 0.5L10.3301 0.5C11.0999 0.5 11.581 1.33333 11.1961 2L6.86601 9.5Z" fill="black"/>
                  </svg>
               </div>
-              <select name="vacancy" class='w100 checkers' v-model='vacancy'>
+              <select name="vacancy" class='w100 checkers' v-model='nv.vacancy'>
                 
                 <option value="tovaroved">Товаровец</option>
                 <option value="tovaroved">другая</option>
@@ -25,7 +25,12 @@
           <label for="fio">
             
             <span>ФИО*<img class='checked' src="@/assets/images/checked.svg" alt=""></span>
-            <input type="text" name='fio' class='w100 req checkers' v-model="fio" @blur='fioCheck'>
+            <input
+              type="text"
+              name='fio'
+              class='w100 req checkers'
+              v-model="nv.fio"
+              @blur='fioCheck'>
             
           </label>
           <span class='red'>Заполните это поле</span>
@@ -37,7 +42,7 @@
                 type="date"
                 name='dob'
                 class='w100 req checkers'
-                v-model="dob"
+                v-model="nv.dob"
                 @blur='dobCheck'>
               </label>
               <span class='red'>Заполните это поле</span>
@@ -52,7 +57,7 @@
                   name='sex'
                   value='male'
                   class='w27'
-                  v-model='sex'>Мужской
+                  v-model='nv.sex'>Мужской
               </div>
               <div id='female'>
                 <div class="big__circle" @click='showFemale'><div class="small__circle" v-if='showDot==2'></div></div>
@@ -60,7 +65,7 @@
                   name='sex'
                   value='female'
                   class='w27'
-                  v-model='sex'>Женский 
+                  v-model='nv.sex'>Женский 
               </div>  
             </div>
           </div>
@@ -68,24 +73,25 @@
 
           <div class="flex flex__block">
             <div class='m40'>
-              <label for="phone" class='half'><span>Телефон*<img class='checked' src="@/assets/images/checked.svg" alt=""></span>
+              <label for="phone" class='half'><span>Телефон*<img class='checked phone__checked' src="@/assets/images/checked.svg" alt=""></span>
                 <masked-input 
-                  v-model="phone" 
+                  v-model="nv.phone" 
                   name='phone'
                   class='mr req checkers'
                   mask="\+\7 (911) 111-1111"
                   placeholder="+7(9"
                   type="tel"
+                  ref="MaskedInput"
                    />
               </label>
-              <span class='red'>Заполните это поле</span>
+              <span class='red phone__red'>Заполните это поле</span>
             </div>
             <div>
-              <label for="mail mr half"><span>Электронная почта*<img v-if='!error3' class='checked' src="@/assets/images/checked.svg" alt=""></span>
+              <label for="mail mr half"><span>Электронная почта*<img v-if='!error3' src="@/assets/images/checked.svg" alt=""></span>
                 <input type="text"
                   name='mail'
                   class='mr req checkers'
-                  v-model="email"
+                  v-model="nv.email"
                   @blur='mailCheck'
                   >
                 </label>    
@@ -93,7 +99,13 @@
             </div>
           </div>
           <h3>Резюме</h3>
-          <textarea name="" id="" rows="10" class='w100' v-model='rezumetext'></textarea>
+          <textarea 
+            name=""
+            id="" 
+            rows="10"
+            class='w100'
+            v-model='nv.rezumetext'>
+          </textarea>
           <label for="file" class='file__label'>
             <span>
               <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,20 +115,17 @@
             </span>
           </label>
           <input
+            v-on:change="handleFileUpload()"
             type="file"
             name='file'
             class='w100 inputfile'
             placeholder="выберете или перетащите файл"
             id='file'
+            
           >
           <h3>Капча</h3>
+          <vue-recaptcha sitekey="6Ldd-VQaAAAAAN2jLztiB4q1HcyhE9jVYSwts10P" :loadRecaptchaScript="true"></vue-recaptcha>
           <div class="flex checkThis__block">
-            <input 
-              type="checkbox"
-              class='checkers checkThis'
-              v-model='checkedAgreement'
-              hidden
-            >
             <div class="checkShow" @click='checkAgree'>
               <svg v-if='showAgree' width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1 5.5L3.76768 8.9963C4.17134 9.50623 4.94668 9.50124 5.34375 8.98615L11.5 1" stroke="black" stroke-width="2" stroke-linecap="round"/>
@@ -124,9 +133,12 @@
             </div>
             <p>я подтверждаю согласие на обработку персональных <br> данных и принимаю условия рассмотрения обращений*</p>
           </div>
-          <button class='submit w100' @click='checkErrors'><rounter-link to="/Success">Отправить</rounter-link> </button>
+          <button class='submit w100' v-bind:class="{yelloBtn : isYellowBtn}">Отправить </button>
         </form>
       </div>
+  
+
+ 
 
       <div class="quests__text">
         <h2>Наша суперцель</h2>
@@ -139,44 +151,143 @@
 
 <script>
 
+import axios from 'axios'
 import MaskedInput from 'vue-masked-input'
+import VueRecaptcha from 'vue-recaptcha';
+
+
 export default {
   components:{
-    MaskedInput
+    MaskedInput,
+    VueRecaptcha
   },
   data(){
     return{
       errors:[],
-      vacancy:'',
-      fio:'',
-      dob:'',
-      sex:'',
-      phone:'',
-      email:'',
-      rezumetext:'',
       rezumeFile:'',
-      showDot:0,
-      checkedMale:false,
-      checkedAgreement:'',
-      showAgree:false,
-      error3:''
+      isYellowBtn:false,
+      nv:{
+        vacancy:'',
+        fio:'',
+        dob:'',
+        sex:'',
+        phone:'',
+        email:'',
+        rezumetext:'',
+        
+      },
+        error3:true,
+        showDot:0,
+        checkedMale:false,
+        checkedAgreement:false,
+        showAgree:false,
     }
   },
   mounted(){
       let checkers = Array.from(document.querySelectorAll('.checkers'));
       let checkIcon = Array.from(document.querySelectorAll('.checked'));
       
-      for(let i=0;i<checkers.length;i++){
+      for(let i=0;i<checkIcon.length;i++){
         checkers[i].addEventListener('blur',()=>{
           (checkers[i].value !='' ? checkIcon[i].style.opacity='1' : 1)  
+          console.log(this.error3)
         })
       }
+
+      const maskedInput = this.$refs.MaskedInput;
+      const input = maskedInput.$refs.input;
+      let phoneErr=document.querySelector('.phone__red');
+      let phoneCheck=document.querySelector('.phone__checked');
+      
+      input.addEventListener("blur", function(e) {
+        if(e,this.value[16]=='_'||this.value==''){
+              input.style.background = '#f8d3d2'
+              phoneErr.style.display = 'block'
+              phoneCheck.style.opacity = '0'
+        }
+        else{
+          input.style.background = '#F5F5F5'
+          phoneErr.style.display = 'none'
+          phoneCheck.style.opacity = '1'
+        }
+      });
     
   },
   methods:{
+
+    checkingFunction(condition,num){
+      let red='#f8d3d2';
+      let grey='#F5F5F5';
+      let errsIn = Array.from(document.querySelectorAll('.req'));
+      let errs = Array.from(document.querySelectorAll('.red'));
+
+      if(condition){
+        errs[num].style.display='block';errsIn[num].style.background=`${red}`;
+        this.errors.push(1);
+        }
+      else{
+        errs[num].style.display='none';errsIn[num].style.background=`${grey}`;
+        }
+    },
+
+    validEmail: function (email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
+
+    checkErrors(){
+      this.checkingFunction(this.nv.fio=='', 0);
+      this.checkingFunction(this.nv.dob=='', 1);
+      this.checkingFunction(this.nv.phone[16]=='_'||this.nv.phone=='', 2);
+      this.checkingFunction(!this.validEmail(this.nv.email), 3);
+      
+    },
+    upload() {
+      let formData = new FormData();
+      formData.append('vacancy', this.nv.vacancy);
+      formData.append('fio', this.nv.fio);
+      formData.append('dob', this.nv.dob);
+      formData.append('sex', this.nv.sex);
+      formData.append('phone', this.nv.phone);
+      formData.append('email', this.nv.email);
+      formData.append('rezumetext', this.nv.rezumetext);
+      formData.append('file', this.file);
+      formData.append('filename', this.file.name);
+      axios.post('http://aic.slim.technology/api/post/form/', formData,{
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })      
+    },
+
+    //THIS IS YOUR MAIN FUNCTION !!!!!!!!!!!!!!!!!!!!!
+    checkAndSubmit(e){
+      this.errors=[];
+      this.checkErrors();
+      if(this.checkedAgreement==false){e.preventDefault()}
+      if(this.errors.length==0){
+        this.upload();
+        return true;
+      }
+      window.scrollTo(0,300);
+      e.preventDefault();
+    },
+
+
+
+
+    
+
+
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+    },
     checkAgree(){
       this.showAgree = !this.showAgree,
       this.checkedAgreement = !this.checkedAgreement
+      this.checkErrors()
+      if(this.errors.length==0){this.isYellowBtn = true}
+      
     },
     showMale(){
       this.showDot = 1
@@ -186,42 +297,17 @@ export default {
       this.showDot = 2
       this.checkedMale = true
     },
-    checkingFunction(condition,num){
-      
-      let red='#f8d3d2';
-      let grey='#F5F5F5';
-
-      let errsIn = Array.from(document.querySelectorAll('.req'));
-      let errs = Array.from(document.querySelectorAll('.red'));
-
-      if(condition){errs[num].style.display='block';errsIn[num].style.background=`${red}`;}
-      else{errs[num].style.display='none';errsIn[num].style.background=`${grey}`;}
-    },
-    validEmail: function (email) {
-      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    },
-    checkErrors(e){
-      this.checkingFunction(this.fio=='', 0);
-      this.checkingFunction(this.dob=='', 1);
-      this.checkingFunction(this.phone.length<17, 2);
-      this.checkingFunction(!this.validEmail(this.email), 3);
-
-      e.preventDefault();
-    },
+    
     fioCheck(){
       this.checkingFunction(this.fio=='', 0);
     },
     dobCheck(){
       this.checkingFunction(this.dob=='', 1);
     },
-    someFunc(){
-      console.log(2); 
-    },
+
     mailCheck(){
-      this.checkingFunction(!this.validEmail(this.email), 3);
-      (!this.validEmail(this.email) ? this.error3 = true : (this.error3 = false));
-     if(this.phone[16]=='_'){console.log(33)}
+      this.checkingFunction(!this.validEmail(this.nv.email), 3);
+      (!this.validEmail(this.nv.email) ? this.error3 = true : this.error3 = false);
     }
   },
   computed:{
@@ -229,12 +315,6 @@ export default {
       return console.log('true');
     } 
   },
-  watch:{
-    function(){
-      console.log(this.showDot)
-    }
-  }
-  
 }
 </script>
 
@@ -414,6 +494,8 @@ input{
       button{
         height: 47px;
         border:none;
+        background:@grey;
+        .t5;
       }
       input, select, textarea, option{
         background:@grey;
@@ -438,6 +520,10 @@ input{
       }
     }
   }
+  .yelloBtn{
+  .t5;
+  background: @ye !important;
+}
   .quests__text{
     flex:1;
     text-align: left;
@@ -459,6 +545,7 @@ input{
       }
 
     }
+    
   }
   @media screen and(max-width:768px){
     .quests__wrapper{
@@ -478,6 +565,16 @@ input{
     }
     .m40{
       margin-right: 0;
+    }
+    h1{
+      font-size: 48px !important;
+      margin:0;
+    }
+    .quests{
+      margin:0 15px;
+    }
+    .checkThis__block{
+      font-size: 14px;
     }
   }
 </style>

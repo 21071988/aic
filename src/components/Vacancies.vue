@@ -19,8 +19,8 @@
           
         </div>
     </div>
-    
-    <div class="vacancies__slider">
+    <div v-if='loading'></div>
+    <div v-else class="vacancies__slider">
       <agile ref="vacancies" :options="optionsVacancies">                    
                 <div class="slide" v-for="vac in vacs" :key="vac.id">
                     <div class="vacancy">
@@ -50,6 +50,7 @@ export default {
       data(){
       return{
         vacs:null,
+        loading:true,
         optionsVacancies:{
           navButtons: false,
           dots:false,
@@ -87,7 +88,10 @@ export default {
   mounted() {
     axios
       .get('http://aic.slim.technology/api/get/vacansys/')
-      .then(response => (this.vacs = response.data))
+      .then(response => {(
+        this.vacs = response.data);
+        this.loading = false
+      })
   }
 }
 </script>
@@ -110,6 +114,7 @@ export default {
   // width: 24.3vw;
   background: @grey;
   margin-right:30px;
+  min-width: 200px;
 }
 .layer1, .layer2{
   position: absolute;
