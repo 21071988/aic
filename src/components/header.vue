@@ -35,7 +35,7 @@ export default {
   },
   mounted(){
       this.bodyWidth = document.body.clientWidth
-      if(this.bodyWidth<375){this.showPhone = true}
+      if(this.bodyWidth<768){this.showPhone = true}
   }
 }
 </script>
@@ -65,14 +65,16 @@ export default {
   }
   .phone__and__button{
     a{
-      margin-right:35px;
       color:@bl;
       text-decoration: none;
       font-size: 18px;
       .sc;
+      &:first-child{
+        margin-right:35px;
+      }
     }
     button{
-      
+      margin-bottom:0;
       height: 47px;
       background:@ye;
       border-radius:8px;
@@ -81,14 +83,17 @@ export default {
       .cp;
     }
   }
-  @media screen and(max-width:768px){
+  @media screen and(max-width:1112px){
     #header{
       margin:0 40px;    
     }
   }
-  @media screen and(max-width:375px){
+  @media screen and(max-width:768px){
     .logo img{
       margin-right:10px;
+    }
+    #header{
+      margin:0 35px 0 15px;  
     }
   }
 </style>

@@ -26,7 +26,11 @@ export default {
     Instagram,
     Slider,
     Map
+  },
+  metaInfo: {
+      title: 'Test site for aic studo',
   }
+  
 }
 </script>
 

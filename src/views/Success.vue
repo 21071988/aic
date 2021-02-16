@@ -95,7 +95,7 @@ export default {
       }
     }
   }
-  @media screen and (max-width:768px){
+  @media screen and (max-width:1112px){
     .success__wrapper{
       margin:0 40px;
       grid-template-columns: 1fr;
@@ -104,7 +104,7 @@ export default {
     }
 
   }
-  @media screen and (max-width:375px){
+  @media screen and (max-width:768px){
     h1{
       font-size: 48px;
     }

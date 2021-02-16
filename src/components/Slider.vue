@@ -6,9 +6,9 @@
         <h1>У тебя к этому талант</h1>
         <div class='top__slider__btns'>
           
-          <div class="slider__btn">
+          <div class="slider__btn" @click="moveSlideBack">
             <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-               <path d="M0.5 5.13399C-0.166667 5.51889 -0.166667 6.48114 0.5 6.86604L8 11.1962C8.66667 11.5811 9.5 11.0999 9.5 10.3301V1.66989C9.5 0.900087 8.66667 0.418962 8 0.803863L0.5 5.13399Z" fill="black"/>
+               <path v-bind:class='{black : isBlack}' d="M0.5 5.13399C-0.166667 5.51889 -0.166667 6.48114 0.5 6.86604L8 11.1962C8.66667 11.5811 9.5 11.0999 9.5 10.3301V1.66989C9.5 0.900087 8.66667 0.418962 8 0.803863L0.5 5.13399Z" fill="black"/>
             </svg>
           </div>
           
@@ -65,6 +65,7 @@ export default {
     },
     data(){
       return{
+        isBlack:false,
         items: null,
         loading:true,
         optionsName:{
@@ -88,6 +89,12 @@ export default {
         this.$refs.carousel.goToNext();
         setTimeout(()=>this.$refs.carousel2.goToNext(),100)
         setTimeout(()=>this.$refs.carousel3.goToNext(),270)
+        this.isBlack = true
+      },
+      moveSlideBack(){
+        this.$refs.carousel.goToPrev();
+        setTimeout(()=>this.$refs.carousel2.goToPrev(),100)
+        setTimeout(()=>this.$refs.carousel3.goToPrev(),270)
       }
     },
     created() {
@@ -110,6 +117,9 @@ export default {
     }
     
   }
+  .black{
+    fill:@bl !important;
+  }
   .round__block{
     overflow:hidden;
   }
@@ -120,6 +130,7 @@ export default {
     position: relative;
     overflow: hidden;
     transform:translateY(-100px);
+    margin:0 auto;
   }
   .slider__asbolute{
     position: absolute;
@@ -215,7 +226,7 @@ export default {
     margin-bottom:@m;
     width: 250px;
   }
-  @media screen and (max-width:768px){
+  @media screen and (max-width:1112px){
     .slider__wrapper{
       padding:0 0 0 45px;
       grid-template-columns: 1fr 1fr;
@@ -225,7 +236,7 @@ export default {
       left:27%;
     }
   }
-  @media screen and (max-width:375px){
+  @media screen and (max-width:768px){
     .slider__wrapper{
       padding:0;
       grid-template-columns: 1fr;

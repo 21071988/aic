@@ -1,13 +1,14 @@
 <template>
   <div id='vacancies'>
 
-    <div class="h__block">
+    <div class="h__block" id='qBtn'>
       <h2>Вакансии в гросс маркете</h2>
+            <router-link to='/questionnaire' v-bind:class='{showBtn : showBtn}' >Заполнить анкету</router-link>
        <div class='top__slider__btns'>
           
-          <div class="slider__btn">
+          <div class="slider__btn" @click='moveVacancyBack'>
             <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-               <path d="M0.5 5.13399C-0.166667 5.51889 -0.166667 6.48114 0.5 6.86604L8 11.1962C8.66667 11.5811 9.5 11.0999 9.5 10.3301V1.66989C9.5 0.900087 8.66667 0.418962 8 0.803863L0.5 5.13399Z" fill="black"/>
+               <path v-bind:class='{black : isBlackToo}' d="M0.5 5.13399C-0.166667 5.51889 -0.166667 6.48114 0.5 6.86604L8 11.1962C8.66667 11.5811 9.5 11.0999 9.5 10.3301V1.66989C9.5 0.900087 8.66667 0.418962 8 0.803863L0.5 5.13399Z" fill="black"/>
             </svg>
           </div>
           
@@ -21,6 +22,7 @@
     </div>
     <div v-if='loading'></div>
     <div v-else class="vacancies__slider">
+
       <agile ref="vacancies" :options="optionsVacancies">                    
                 <div class="slide" v-for="vac in vacs" :key="vac.id">
                     <div class="vacancy">
@@ -50,7 +52,10 @@ export default {
       data(){
       return{
         vacs:null,
+        isBlackToo:false,
         loading:true,
+        wW:null,
+        showBtn:false,
         optionsVacancies:{
           navButtons: false,
           dots:false,
@@ -58,13 +63,13 @@ export default {
           slidesToShow:3.5,
           responsive:[
             {
-              breakpoint:769,
+              breakpoint:1113,
               settings:{
                 slidesToShow:3.5
               }
             },
             {
-              breakpoint:376,
+              breakpoint:500,
               settings:{
                 slidesToShow:2.5
               }
@@ -83,17 +88,25 @@ export default {
   methods:{
     moveVacancy(){
       this.$refs.vacancies.goToNext();
-    }
+      this.isBlackToo = true;
+    },
+    moveVacancyBack(){
+      this.$refs.vacancies.goToPrev();
+    },
+    
   },
+
   mounted() {
+    this.wW = document.body.clientWidth
     axios
       .get('http://aic.slim.technology/api/get/vacansys/')
       .then(response => {(
         this.vacs = response.data);
         this.loading = false
       })
+    },
+    
   }
-}
 </script>
 
 <style lang='less'>
@@ -107,14 +120,27 @@ export default {
 }
 .h__block{
   .between;
+  position: relative;
+  padding-right:165px;
+  a{
+    position: absolute;
+    background: @ye;
+    height: 47px;
+    border-radius:8px;
+    border:none;
+    font-size: 18px;
+    .allcenter;
+    width: calc(100% - 15px);
+    bottom: -170%;
+    z-index: 10;
+    // display: none;
+  }
 }
 .vacancy{
   height:33.47vw;
   position: relative;
-  // width: 24.3vw;
   background: @grey;
   margin-right:30px;
-  min-width: 200px;
 }
 .layer1, .layer2{
   position: absolute;
@@ -154,21 +180,31 @@ export default {
     background:#ffffff;
     padding:10px 5px;
 }
-
-@media screen and (max-width:768px){
+  .h__block a{
+    display: none;
+  }
+@media screen and (max-width:1112px){
   #vacancies{
     margin-left:@m;
   }
   .vacancy{
     height: 49.47vw;
   }
+  .h__block{
+    padding-right:40px;
+  }
 }
-@media screen and (max-width:475px){
+@media screen and (max-width:768px){
   #vacancies{
     margin-left:15px;
   }
   .vacancy{
     height: 104vw;
   }
+  .h__block a{
+    display: flex;
+    opacity: 1;
+  }
+
 }
 </style>

@@ -3,16 +3,37 @@
   <div id='footer'>
     <div class="half">
       <div class="logo">
-        <img src="@/assets/images/logo.svg" alt="logo">
-        <span>гросс маркет</span>
+        <router-link to='/'>
+          <img src="@/assets/images/logo.svg" alt="logo">
+          <span>гросс маркет</span>
+        </router-link>
       </div>
     </div>
     <div class="half between">
       <p v-if='!showPhone'>Поделиться</p>
       <div class="social__links">
-        <a target='blank' href="http://www.facebook.com/sharer/sharer.php?s=100&p%5Btitle%5D=[TITLE]&p%5Bsummary%5D=[TEXT]&p%5Burl%5D=[LINK]&p%5Bimages%5D%5B0%5D=[IMAGE]"><img src="@/assets/images/facebook.svg" alt="facebook"></a>
-        <a target='blank' href="https://vk.com/share.php?url=[LINK]"><img src="@/assets/images/vk.svg" alt="vk"></a>
-        
+        <ShareNetwork
+          network="facebook"
+          url="http://aic.slim.technology/"
+          title="Друзья, у нас отличные новости!"
+          description="И это еще не всё! переходите по ссылке, там много всего интересного."
+          media='http://aic.slim.technology//upload/iblock/93e/93ea7d03167fa86ab694a39503bd8412.png'
+          quote="Мы обьявляем открытым набор вакансий кассира, товароведа и многих других!"
+          hashtags="aic, вакансии"
+        >
+          <img src="@/assets/images/facebook.svg" alt="facebook">
+      </ShareNetwork>
+      <ShareNetwork
+          network="vk"
+          url="http://aic.slim.technology/"
+          title="Друзья, у нас отличные новости!"
+          description="И это еще не всё! переходите по ссылке, там много всего интересного."
+          media='http://aic.slim.technology//upload/iblock/93e/93ea7d03167fa86ab694a39503bd8412.png'
+          quote="Мы обьявляем открытым набор вакансий кассира, товароведа и многих других!"
+          hashtags="aic, вакансии"
+        >
+          <img src="@/assets/images/vk.svg" alt="vk">
+      </ShareNetwork>  
       </div>
     </div>
   </div>
@@ -71,6 +92,9 @@ export default {
     height:89px;
     .allcenter;
     .f1;
+    p{
+      margin-bottom:0;
+    }
   }
   .half{
     flex:1;
@@ -100,19 +124,21 @@ export default {
     .flex;
     height:75px;
     p{
+      margin-bottom:0;
       &:hover{
         .cp;
       }
     }
   }
-  @media screen and (max-width:768px){
+  @media screen and (max-width:1112px){
     .footer__wrapper{
       padding:40px;
     }
   }
   @media screen and (max-width:768px){
     .footer__wrapper{
-      padding:20px 0px;
+      padding:49px 0px 0;
+      
     }
     #footer{
       flex-direction: column;

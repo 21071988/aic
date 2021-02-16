@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import VueAgile from 'vue-agile'
 import YmapPlugin from 'vue-yandex-maps'
+import VueSocialSharing from 'vue-social-sharing'
 
 
 const settings = {
@@ -16,6 +17,7 @@ const settings = {
 Vue.config.productionTip = false
 Vue.use(VueAgile)
 Vue.use(YmapPlugin, settings)
+Vue.use(VueSocialSharing);
 
 new Vue({
   router,

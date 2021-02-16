@@ -2,23 +2,12 @@
   <div>
     <h2>Мы в инстаграме</h2>
     <div class="inst__block">
-      <div class="half inst__images">
-        <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
+      <div class="half inst__images" >
+        <img v-for='ins in inst.slice(0,5)' :key='ins.id' v-bind:src="'http://aic.slim.technology/'+ins.PICTURE" :alt="ins.TITLE">
       </div>
     </div>
     <div class="inst__more" v-if='showMore'>
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
-          <img src="@/assets/images/inst.jpg" alt="">
+          <img v-for='ins in inst.slice(5,inst.length)' :key='ins.id' v-bind:src="'http://aic.slim.technology/'+ins.PICTURE" :alt="ins.TITLE">
     </div>
     <button class='show__more__btn' @click="showMore = true">показать еще</button>
     
@@ -26,12 +15,22 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data(){
     return{
-      showMore:false
+      showMore:false,
+      inst:[]
     }
     
+  },
+  created(){
+    axios
+      .get('http://aic.slim.technology/api/get/instagram/')
+      .then(response => {(
+        this.inst = response.data);
+        this.loading = false;
+      });
   }
 }
 </script>
@@ -82,9 +81,14 @@ export default {
     border-radius:8px;
     border:none;
     margin:calc(@m *2) auto;
+    background:@grey;
+    .t5;
+    &:hover{
+      background: @ye;
+    }
   }
 
-  @media screen and (max-width:768px) {
+  @media screen and (max-width:1112px) {
     .inst__block{
       margin:0 @m;
     }
@@ -123,10 +127,12 @@ export default {
     }
   }
 
-@media screen and (max-width:375px) {
+@media screen and (max-width:768px) {
     
     .inst__more{
       grid-template-columns: repeat(1,1fr);
+      margin:0 15px;
+      grid-gap:12px;
     }
     .inst__images{
       grid-template-columns: repeat(1,1fr);
@@ -134,12 +140,15 @@ export default {
   
   .inst__images{
     display:block;
+    img{
+      margin-bottom:12px;
+    }  
   }
   .inst__block{
-    margin:0 10px;
+    margin:0 15px;
   }
   h2{
-    margin-left:10px;
+    margin-left:15px;
   }
 }
 </style>

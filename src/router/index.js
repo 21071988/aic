@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-// import Success from '../views/Success.vue'
+import Questionnaire from '../views/questionnaire.vue'
+import Success from '../views/Success.vue'
 
 Vue.use(VueRouter)
 
@@ -14,23 +15,12 @@ const routes = [
   {
     path: '/questionnaire',
     name: 'Questionnaire',
-    component: function () {
-      return import(/* webpackChunkName: "Questionnaire" */ '../views/questionnaire.vue')
-    }
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: function () {
-      return import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
+    component: Questionnaire
   },
   {
     path: '/Success',
     name: 'Success',
-    component: function () {
-      return import(/* webpackChunkName: "Success" */ '../views/Success.vue')
-    }
+    component: Success
   }
 ]
 

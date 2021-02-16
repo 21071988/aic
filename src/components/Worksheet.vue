@@ -44,9 +44,13 @@ export default {
 @import '~@/assets/css/styles.less';
   #modal__wrapper{
     position:fixed;
-    top:0;
-    left:0;
-    padding:40px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding:70px 160px;
     min-height: 100vh;
     background:rgba(0,0,0,.4);
     border-radius:0;
@@ -62,5 +66,25 @@ export default {
     z-index:11;
     opacity: 1;
     text-align: left;
+    .h__block{
+      padding-right: 0;
+      h2{
+        margin:20px 0;
+      }
+    }
   }
+    @media screen and(max-width:1112px){
+      #modal__wrapper{
+        padding:70px 40px;
+      }
+    }
+    @media screen and(max-width:768px){
+      #modal__wrapper{
+        padding:0px;
+        
+      }
+      .blank{
+        border-radius: 0 !important;
+      }
+    }
 </style>

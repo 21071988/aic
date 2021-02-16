@@ -14,10 +14,12 @@
                   <path d="M6.86601 9.5C6.48111 10.1667 5.51886 10.1667 5.13396 9.5L0.803833 2C0.418933 1.33333 0.900059 0.5 1.66986 0.5L10.3301 0.5C11.0999 0.5 11.581 1.33333 11.1961 2L6.86601 9.5Z" fill="black"/>
                  </svg>
               </div>
-              <select name="vacancy" class='w100 checkers' v-model='nv.vacancy'>
+              <select class='checkers' v-model='nv.vacancy'>
                 
-                <option value="tovaroved">Товаровец</option>
-                <option value="tovaroved">другая</option>
+                <option value="tovaroved">Товаровед</option>
+                <option value="kassir">Кассир</option>
+                <option value="HeadChief">Управляющий</option>
+                
               </select>
             </div>
           </label>
@@ -27,8 +29,7 @@
             <span>ФИО*<img class='checked' src="@/assets/images/checked.svg" alt=""></span>
             <input
               type="text"
-              name='fio'
-              class='w100 req checkers'
+              class='req checkers'
               v-model="nv.fio"
               @blur='fioCheck'>
             
@@ -40,8 +41,7 @@
               <label for="dob" class='half'><span>Дата рождения*<img class='checked'  src="@/assets/images/checked.svg" alt=""></span>
                 <input 
                 type="date"
-                name='dob'
-                class='w100 req checkers'
+                class='req checkers'
                 v-model="nv.dob"
                 @blur='dobCheck'>
               </label>
@@ -49,34 +49,40 @@
             </div>
             <div class='half'>
               <h3><span>Пол</span><img class='checked__male' v-if='checkedMale' src="@/assets/images/checked.svg" alt=""></h3>
-              <div class="male__type w100 flex">
-              <div id='male' @click='showMale'>
-                <div class="big__circle"><div class="small__circle" v-if='showDot==1'></div></div>
-                <input
-                  type="radio"
-                  name='sex'
-                  value='male'
-                  class='w27'
-                  v-model='nv.sex'>Мужской
-              </div>
-              <div id='female'>
-                <div class="big__circle" @click='showFemale'><div class="small__circle" v-if='showDot==2'></div></div>
-                <input type="radio"
-                  name='sex'
-                  value='female'
-                  class='w27'
-                  v-model='nv.sex'>Женский 
-              </div>  
+              <div class="male__type flex">
+                      
+                    <input 
+                      type="radio" 
+                      class='w27' 
+                      id="one" 
+                      value="Мужской" 
+                      v-model="nv.sex"
+                      hidden>
+                    <label for="one" @click='showMale' class='m20'>
+                      <div class="big__circle"><div class="small__circle" v-if='showDot==1'></div></div>
+                      Мужской</label>
+                     
+                    <input 
+                      type="radio"
+                      id="two" 
+                      class='w27' 
+                      value="Женский" 
+                      v-model="nv.sex"
+                      hidden>
+                    <label for="two" @click='showFemale'>
+                      <div class="big__circle" ><div class="small__circle" v-if='showDot==2'></div></div>
+                      Женский</label>
+                
+      
+
             </div>
           </div>
         </div>
-
           <div class="flex flex__block">
-            <div class='m40'>
+            <div class='m40 half'>
               <label for="phone" class='half'><span>Телефон*<img class='checked phone__checked' src="@/assets/images/checked.svg" alt=""></span>
                 <masked-input 
                   v-model="nv.phone" 
-                  name='phone'
                   class='mr req checkers'
                   mask="\+\7 (911) 111-1111"
                   placeholder="+7(9"
@@ -86,10 +92,9 @@
               </label>
               <span class='red phone__red'>Заполните это поле</span>
             </div>
-            <div>
+            <div class='half'>
               <label for="mail mr half"><span>Электронная почта*<img v-if='!error3' src="@/assets/images/checked.svg" alt=""></span>
                 <input type="text"
-                  name='mail'
                   class='mr req checkers'
                   v-model="nv.email"
                   @blur='mailCheck'
@@ -100,10 +105,8 @@
           </div>
           <h3>Резюме</h3>
           <textarea 
-            name=""
-            id="" 
+            id="" n
             rows="10"
-            class='w100'
             v-model='nv.rezumetext'>
           </textarea>
           <label for="file" class='file__label'>
@@ -114,29 +117,32 @@
                Выберите или перетащите файл
             </span>
           </label>
+          {{file.name}}
           <input
-            v-on:change="handleFileUpload()"
-            type="file"
-            name='file'
-            class='w100 inputfile'
-            placeholder="выберете или перетащите файл"
-            id='file'
-            
-          >
-          <h3>Капча</h3>
-          <vue-recaptcha sitekey="6Ldd-VQaAAAAAN2jLztiB4q1HcyhE9jVYSwts10P" :loadRecaptchaScript="true"></vue-recaptcha>
+            type="file" 
+            class='inputfile' 
+            id="file" ref="file" 
+            placeholder="выберете или перетащите файл" 
+            v-on:change="handleFileUpload()"/>
+          
+          <!-- <h3>Капча</h3> -->
+          <!-- <vue-recaptcha sitekey="6Ldd-VQaAAAAAN2jLztiB4q1HcyhE9jVYSwts10P" :loadRecaptchaScript="true"> -->
+
+          <!-- </vue-recaptcha> -->
           <div class="flex checkThis__block">
             <div class="checkShow" @click='checkAgree'>
               <svg v-if='showAgree' width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1 5.5L3.76768 8.9963C4.17134 9.50623 4.94668 9.50124 5.34375 8.98615L11.5 1" stroke="black" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </div>
-            <p>я подтверждаю согласие на обработку персональных <br> данных и принимаю условия рассмотрения обращений*</p>
+            <p v-bind:class='{red__text : redText}'>я подтверждаю согласие на обработку персональных <br> данных и принимаю условия рассмотрения обращений*</p>
           </div>
-          <button class='submit w100' v-bind:class="{yelloBtn : isYellowBtn}">Отправить </button>
+          <button class='submit' v-bind:class="{yelloBtn : isYellowBtn} ">
+            Отправить
+            </button>
         </form>
       </div>
-  
+
 
  
 
@@ -153,13 +159,13 @@
 
 import axios from 'axios'
 import MaskedInput from 'vue-masked-input'
-import VueRecaptcha from 'vue-recaptcha';
+// import VueRecaptcha from 'vue-recaptcha';
 
 
 export default {
   components:{
-    MaskedInput,
-    VueRecaptcha
+    MaskedInput
+    // VueRecaptcha
   },
   data(){
     return{
@@ -170,17 +176,19 @@ export default {
         vacancy:'',
         fio:'',
         dob:'',
-        sex:'',
+        sex:'Male',
         phone:'',
         email:'',
         rezumetext:'',
-        
       },
+        file:'',
         error3:true,
         showDot:0,
         checkedMale:false,
         checkedAgreement:false,
         showAgree:false,
+        redText:false,
+        redirect:false
     }
   },
   mounted(){
@@ -190,7 +198,6 @@ export default {
       for(let i=0;i<checkIcon.length;i++){
         checkers[i].addEventListener('blur',()=>{
           (checkers[i].value !='' ? checkIcon[i].style.opacity='1' : 1)  
-          console.log(this.error3)
         })
       }
 
@@ -224,9 +231,12 @@ export default {
       if(condition){
         errs[num].style.display='block';errsIn[num].style.background=`${red}`;
         this.errors.push(1);
+        console.log(this.errors.length)
         }
       else{
         errs[num].style.display='none';errsIn[num].style.background=`${grey}`;
+        if(this.errors.length>0){this.errors.pop(1);}
+        console.log(this.errors.length)
         }
     },
 
@@ -264,19 +274,19 @@ export default {
     checkAndSubmit(e){
       this.errors=[];
       this.checkErrors();
-      if(this.checkedAgreement==false){e.preventDefault()}
+      if(this.checkedAgreement==false){
+        this.redText = true
+        e.preventDefault()
+        }
       if(this.errors.length==0){
+        this.redirect = true;
         this.upload();
+        this.$router.push('Success');
         return true;
       }
-      window.scrollTo(0,300);
+      window.scrollTo(0,550);
       e.preventDefault();
     },
-
-
-
-
-    
 
 
     handleFileUpload(){
@@ -286,7 +296,9 @@ export default {
       this.showAgree = !this.showAgree,
       this.checkedAgreement = !this.checkedAgreement
       this.checkErrors()
-      if(this.errors.length==0){this.isYellowBtn = true}
+      console.log(this.errors)
+      if(this.errors.length==0){this.isYellowBtn = true;}
+      if(this.redText == true){this.redText = false}
       
     },
     showMale(){
@@ -299,10 +311,10 @@ export default {
     },
     
     fioCheck(){
-      this.checkingFunction(this.fio=='', 0);
+      this.checkingFunction(this.nv.fio=='', 0);
     },
     dobCheck(){
-      this.checkingFunction(this.dob=='', 1);
+      this.checkingFunction(this.nv.dob=='', 1);
     },
 
     mailCheck(){
@@ -320,10 +332,28 @@ export default {
 
 <style scoped lang='less'>
 @import '~@/assets/css/styles.less';
-
+.submit{
+  a{
+    &:hover{
+      color:@bl !important;
+    }
+  }
+}
+.male__type{
+  label{
+    margin-top:0 !important;
+  }
+}
+.m20{
+  margin-right: 20px;
+}
+.red__text{
+  color:@red !important;
+}
 .select__block{
   position:relative;
   height:47px;
+  margin-top:20px;
 }
 select {
   padding-right: 25px;
@@ -358,6 +388,7 @@ select {
   height: 30px;
   z-index:2;
   .allcenter;
+  margin-bottom:35px;
 }
 .checkThis__block{
   .flex;
@@ -376,6 +407,7 @@ select {
 }
 .file__label{
   width: calc(100% - 20px);
+  margin-bottom:20px;
   background:@grey;
   height: 50px;
   .flex;
@@ -408,11 +440,12 @@ select {
 #male, #female{
   .flex;
   margin-right:20px;
+  font-size: 14px;
 }
 .big__circle{
   width: 24px;
   height:24px;
-  margin-right: 10px;
+  margin-right: 5px;
   border-radius:50%;
   background:@grey;
   position: relative;
@@ -456,12 +489,20 @@ h2{
 } 
 h3{
   text-align: left;
+  margin-top:40px;
 }
-input{
-  .w100;
+input, textarea{
+  width: calc(100% - 20px);
+}
+textarea{
+  margin-top: 0 !important;
 }
 .male__type{
   height: 47px;
+  margin-top:0 !important;
+  label{
+    flex-direction: row !important;
+  }
 
   input{
     position: absolute;
@@ -491,8 +532,12 @@ input{
     flex:1;
     form{
       text-align: left;
+      label{
+        margin-top:40px;
+      }
       button{
         height: 47px;
+        .w100;
         border:none;
         background:@grey;
         .t5;
@@ -512,10 +557,10 @@ input{
         .column;
         text-align: left;
         margin-top:40px;
-        .w100;
+        
       }
       select{
-        width: calc(100% + 10px);
+        width: 100%;
         height: 47px;
       }
     }
@@ -544,22 +589,29 @@ input{
         font-size: 24px;
       }
 
-    }
-    
+    }  
   }
-  @media screen and(max-width:768px){
+  @media screen and(max-width:1112px){
+    .m20{
+      margin-right:100px;
+    }
     .quests__wrapper{
       display: block;
     }
     .quests{
       margin:0 40px 80px;
+      padding-bottom:49px;
     }
     .quests__form{
       margin-right:0;
     }
   }
   
-  @media screen and(max-width:375px){
+  @media screen and(max-width:768px){
+    .quests__form form label{
+      width: auto;
+      margin-top:0;
+    }
     .flex__block{
       .column;
     }
