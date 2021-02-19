@@ -10,19 +10,20 @@
             <span>Вакансия*<img class='checked' src="@/assets/images/checked.svg" alt=""></span>
             <div class="select__block">
               <div class='select__arrow'>
-                <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.86601 9.5C6.48111 10.1667 5.51886 10.1667 5.13396 9.5L0.803833 2C0.418933 1.33333 0.900059 0.5 1.66986 0.5L10.3301 0.5C11.0999 0.5 11.581 1.33333 11.1961 2L6.86601 9.5Z" fill="black"/>
-                 </svg>
               </div>
-              <select class='checkers' v-model='nv.vacancy'>
-                
-                <option value="tovaroved">Товаровед</option>
-                <option value="kassir">Кассир</option>
-                <option value="HeadChief">Управляющий</option>
-                
+              <select 
+                class='checkers'
+                v-model='nv.vacancy' 
+                v-bind:class="{ redSelect: isRedSelect }"
+                >
+                <option disabled value="">Выберите вакансию</option>
+                <option v-bind:value="vac.NAME" v-for="vac in vacs" :key="vac.id">{{vac.NAME}}</option>
               </select>
+              
             </div>
           </label>
+          <span v-if='isRedSelect' class='redSelectText'>Заполните это поле</span>
+          
 
           <label for="fio">
             
@@ -34,7 +35,7 @@
               @blur='fioCheck'>
             
           </label>
-          <span class='red'>Заполните это поле</span>
+          <span class='red'>{{fiomsg}}</span>
 
           <div class="flex flex__block">
             <div class='m40 half'>
@@ -42,6 +43,7 @@
                 <input 
                 type="date"
                 class='req checkers'
+                max="2005-01-01"
                 v-model="nv.dob"
                 @blur='dobCheck'>
               </label>
@@ -84,8 +86,8 @@
                 <masked-input 
                   v-model="nv.phone" 
                   class='mr req checkers'
-                  mask="\+\7 (911) 111-1111"
-                  placeholder="+7(9"
+                  mask="\+\7 (111) 111-1111"
+                  placeholder="+7("
                   type="tel"
                   ref="MaskedInput"
                    />
@@ -100,7 +102,7 @@
                   @blur='mailCheck'
                   >
                 </label>    
-                <span class='red'>Поле заполнено не корректно</span>
+                <span class='red'>Поле заполнено некорректно</span>
             </div>
           </div>
           <h3>Резюме</h3>
@@ -125,10 +127,24 @@
             placeholder="выберете или перетащите файл" 
             v-on:change="handleFileUpload()"/>
           
-          <!-- <h3>Капча</h3> -->
-          <!-- <vue-recaptcha sitekey="6Ldd-VQaAAAAAN2jLztiB4q1HcyhE9jVYSwts10P" :loadRecaptchaScript="true"> -->
-
-          <!-- </vue-recaptcha> -->
+          <h3>Капча</h3>
+          <div v-if='anothershow'>
+            
+          <span v-if='isRobot' class='robot'>Давайте убедимся что вы не робот </span>
+          </div>
+          <div class="" v-else>
+            <Captcha id="recaptchaDiv" :siteKey='siteKey'
+              :show="1" 
+              render='explicit'
+              size="normal" 
+              theme="light"
+              :tabindex="0"
+              @verify="recaptchaVerified"
+              @expire="recaptchaExpired"
+              @fail="recaptchaFailed"
+              ref="vueRecaptcha">
+            </Captcha>
+          </div>        
           <div class="flex checkThis__block">
             <div class="checkShow" @click='checkAgree'>
               <svg v-if='showAgree' width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -156,22 +172,28 @@
 </template>
 
 <script>
-
 import axios from 'axios'
 import MaskedInput from 'vue-masked-input'
-// import VueRecaptcha from 'vue-recaptcha';
+import Captcha from 'vue3-recaptcha2';
+
 
 
 export default {
   components:{
-    MaskedInput
-    // VueRecaptcha
+    MaskedInput,
+    Captcha
+    
   },
   data(){
     return{
       errors:[],
+      vacs:null,
       rezumeFile:'',
       isYellowBtn:false,
+      isRedSelect:false,
+      show:false,
+      fiomsg:"Заполните это поле",
+      siteKey:'6Lf7kVgaAAAAAOnJyLpEVludrOO74RL4Qzz2xljo',
       nv:{
         vacancy:'',
         fio:'',
@@ -188,29 +210,61 @@ export default {
         checkedAgreement:false,
         showAgree:false,
         redText:false,
-        redirect:false
+        redirect:false,
+        cRes:false,
+        isRobot:false
     }
   },
+  beforeCreate(){
+    this.show=1
+    console.log(this.show)
+  },
+  created(){
+    this.show=1
+    
+    
+  },
+  beforeMount(){
+    console.log(this.show)
+  },
+
+  beforeDestroy(){
+    console.log(this.show)
+  },
   mounted(){
+      this.show=1
+      axios
+      .get('http://aic.slim.technology/api/get/vacansys/')
+      .then(response => {(
+        this.vacs = response.data);
+        this.loading = false
+      })
+      
       let checkers = Array.from(document.querySelectorAll('.checkers'));
       let checkIcon = Array.from(document.querySelectorAll('.checked'));
-      
       for(let i=0;i<checkIcon.length;i++){
         checkers[i].addEventListener('blur',()=>{
           (checkers[i].value !='' ? checkIcon[i].style.opacity='1' : 1)  
         })
       }
-
+      
+      //phone mask input check
       const maskedInput = this.$refs.MaskedInput;
       const input = maskedInput.$refs.input;
+      let phoneErrorText = document.querySelector('.phone__red');
       let phoneErr=document.querySelector('.phone__red');
       let phoneCheck=document.querySelector('.phone__checked');
       
-      input.addEventListener("blur", function(e) {
-        if(e,this.value[16]=='_'||this.value==''){
+      input.addEventListener("blur", function() {
+        if(this.value[16]=='_'||this.value==''){
               input.style.background = '#f8d3d2'
               phoneErr.style.display = 'block'
               phoneCheck.style.opacity = '0'
+            if(this.value[4]!=='_'){
+              phoneErrorText.innerText = 'Поле не заполнено до конца';
+            }else{
+              phoneErrorText.innerText = "Заполните это поле";
+            }
         }
         else{
           input.style.background = '#F5F5F5'
@@ -221,7 +275,18 @@ export default {
     
   },
   methods:{
-
+    recaptchaVerified(response) {
+      if(response){
+        this.cRes = true
+      }
+      return response
+      
+    },
+    recaptchaExpired() {
+      this.$refs.vueRecaptcha.reset();
+    },
+    recaptchaFailed() {
+    },
     checkingFunction(condition,num){
       let red='#f8d3d2';
       let grey='#F5F5F5';
@@ -231,13 +296,24 @@ export default {
       if(condition){
         errs[num].style.display='block';errsIn[num].style.background=`${red}`;
         this.errors.push(1);
-        console.log(this.errors.length)
         }
       else{
-        errs[num].style.display='none';errsIn[num].style.background=`${grey}`;
-        if(this.errors.length>0){this.errors.pop(1);}
-        console.log(this.errors.length)
+        if(this.nv.fio.match(/[0-9]/) !== null){
+          errs[0].style.display='block';errsIn[0].style.background=`${red}`;
+          this.errors.push(1);
+          this.fiomsg='Фамилия может содержать только буквы'
         }
+        else if(this.nv.fio==' '){
+          errs[0].style.display='block';errsIn[0].style.background=`${red}`;
+          this.errors.push(1);
+        }
+        else{
+          errs[num].style.display='none';errsIn[num].style.background=`${grey}`;
+          if(this.errors.length>0){this.errors.pop(1);}
+        }
+      }
+
+        
     },
 
     validEmail: function (email) {
@@ -248,9 +324,16 @@ export default {
     checkErrors(){
       this.checkingFunction(this.nv.fio=='', 0);
       this.checkingFunction(this.nv.dob=='', 1);
-      this.checkingFunction(this.nv.phone[16]=='_'||this.nv.phone=='', 2);
-      this.checkingFunction(!this.validEmail(this.nv.email), 3);
-      
+      this.checkingFunction(this.nv.phone=='', 2);
+      this.checkingFunction(!this.validEmail(this.nv.email), 3);      
+    },
+    checkSelect(){
+      if(this.nv.vacancy==''){
+        this.isRedSelect = true;
+        window.scrollTo(0,250);
+      }else{
+        this.isRedSelect = false;
+      }
     },
     upload() {
       let formData = new FormData();
@@ -273,19 +356,25 @@ export default {
     //THIS IS YOUR MAIN FUNCTION !!!!!!!!!!!!!!!!!!!!!
     checkAndSubmit(e){
       this.errors=[];
-      this.checkErrors();
-      if(this.checkedAgreement==false){
+     if(this.checkedAgreement==false){
         this.redText = true
         e.preventDefault()
-        }
-      if(this.errors.length==0){
-        this.redirect = true;
-        this.upload();
-        this.$router.push('Success');
-        return true;
       }
-      window.scrollTo(0,550);
-      e.preventDefault();
+      this.checkSelect();
+      if(this.isRedSelect == true){e.preventDefault()}
+      this.checkErrors();
+      if(this.errors.length==0){
+        if(this.cRes == true){
+          this.upload();
+          this.redirect = true;
+          this.$router.push('Success');
+          return true;
+        }
+        else{
+          this.isRobot = true
+          e.preventDefault();
+        }
+      }
     },
 
 
@@ -296,7 +385,6 @@ export default {
       this.showAgree = !this.showAgree,
       this.checkedAgreement = !this.checkedAgreement
       this.checkErrors()
-      console.log(this.errors)
       if(this.errors.length==0){this.isYellowBtn = true;}
       if(this.redText == true){this.redText = false}
       
@@ -311,7 +399,7 @@ export default {
     },
     
     fioCheck(){
-      this.checkingFunction(this.nv.fio=='', 0);
+      this.checkingFunction(this.nv.fio=='', 0);      
     },
     dobCheck(){
       this.checkingFunction(this.nv.dob=='', 1);
@@ -325,7 +413,8 @@ export default {
   computed:{
     showTrue: function(){
       return console.log('true');
-    } 
+    },
+   
   },
 }
 </script>
@@ -344,8 +433,16 @@ export default {
     margin-top:0 !important;
   }
 }
+.cap{
+  width: 200px;
+  height: 100px ;
+}
 .m20{
   margin-right: 20px;
+}
+.robot{
+  font-size: 12px;
+  color:@red;
 }
 .red__text{
   color:@red !important;
@@ -361,9 +458,15 @@ select {
   -moz-appearance: none;
   appearance: none;
   position:absolute;
+  background: url(http://aic.slim.technology/images/ar.svg) no-repeat right @grey  !important;
+  background-position-x: calc(100% - 22px) !important;
   top:0;
   left:0;
   margin:0 !important;
+}
+.redSelect{
+  background: url(http://aic.slim.technology/images/ar.svg) no-repeat right rgb(248, 211, 210)  !important;
+    background-position-x: calc(100% - 22px) !important;
 }
 .select__arrow{
   position:absolute;
@@ -526,6 +629,9 @@ textarea{
   .red{
     color:#FF6666;
     display: none;
+  }
+  .redSelectText{
+    color:#FF6666;
   }
   .quests__form{
     .mr;
